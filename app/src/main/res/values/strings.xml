@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">WazirxClone</string>
+    <string name="slash">/</string>
+    <string name="price_label">Price</string>
+    <string name="volume_label">Volume</string>
+    <string name="min_price_label">Min price</string>
+    <string name="max_price_label">Маx price</string>
+    <string name="last_market_label">Last Market</string>
+    <string name="last_updated_label">Last updated</string>
+</resources>
