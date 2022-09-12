@@ -1,36 +1,50 @@
-package com.wazirx.exchange.activities
+package com.wazirx.exchange.fragment
 
-import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.wazirx.exchange.CoinViewModel
+import androidx.navigation.fragment.findNavController
+import com.wazirx.exchange.viewmodel.CoinViewModel
+import com.wazirx.exchange.viewmodel.CoinViewModelFactory
 import com.wazirx.exchange.adapters.CoinInfoAdapter
-import com.wazirx.exchange.R
+import com.wazirx.exchange.databinding.FragmentCoinPriceListBinding
 import com.wazirx.exchange.pojo.CoinInfo
-import kotlinx.android.synthetic.main.activity_coin_price_list.*
+import kotlinx.android.synthetic.main.fragment_coin_price_list.*
 
-class CoinPriceListActivity : AppCompatActivity() {
+class CoinPriceListFragment : Fragment() {
 
-    private lateinit var viewModel: CoinViewModel
+    private val viewModel by lazy {
+        ViewModelProvider(this, CoinViewModelFactory(requireActivity().application)
+        )[CoinViewModel::class.java]
+    }
+    private lateinit var binding: FragmentCoinPriceListBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_coin_price_list)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentCoinPriceListBinding.inflate(layoutInflater, container, false)
+        return binding.root
+    }
 
-        viewModel = ViewModelProvider(this)[CoinViewModel::class.java]
-        val adapter = CoinInfoAdapter(this)
-        viewModel.loadData()
-        val coinClickListener = object : CoinInfoAdapter.OnCoinClickListener {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val adapter = CoinInfoAdapter(requireActivity())
+        rvCoinPriceList.adapter = adapter
+        adapter.onCoinClickListener = object : CoinInfoAdapter.OnCoinClickListener {
             override fun onCoinClick(coinPriceInfo: CoinInfo) {
-                val intent = Intent(this@CoinPriceListActivity, CoinDetailActivity::class.java)
-                intent.putExtra("Symbol", coinPriceInfo.symbol)
-                startActivity(intent)
+                findNavController().navigate(
+                    CoinPriceListFragmentDirections.actionCoinPriceListFragmentToCoinDetailFragment(
+                        coinPriceInfo.symbol)
+                )
             }
         }
-        adapter.onCoinClickListener = coinClickListener
-        rvCoinPriceList.adapter = adapter
-        viewModel.priceList.observe(this) {
+        viewModel.priceList.observe(viewLifecycleOwner) {
             adapter.coinInfoList = it
         }
     }

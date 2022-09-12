@@ -13,11 +13,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.WazirxClone"
         tools:targetApi="31">
-        <activity android:name=".activities.CoinDetailActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".activities.CoinPriceListActivity"
+        <activity
+            android:name=".activities.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -21,6 +21,7 @@ data class CoinInfo(
     @SerializedName("askPrice"   )@Expose var askPrice   : String? = null,
     @SerializedName("at"         )@Expose var at         : Long?    = null
 ) {
+
     fun getFormattedTime(): String {
         return convertTimestampToTime(at)
     }

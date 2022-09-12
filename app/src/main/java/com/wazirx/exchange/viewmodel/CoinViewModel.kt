@@ -1,4 +1,4 @@
-package com.wazirx.exchange
+package com.wazirx.exchange.viewmodel
 
 import android.app.Application
 import android.util.Log
